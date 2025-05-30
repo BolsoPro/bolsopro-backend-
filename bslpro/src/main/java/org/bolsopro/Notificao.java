@@ -1,4 +1,4 @@
 package org.bolsopro;
 
-public class Receita {
+public class Notificao {
 }
