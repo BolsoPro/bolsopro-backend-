@@ -37,5 +37,25 @@ public class Usuario {
         metasFinanceiras.add(meta);
     }
 
+    public List<Receita> getReceitas() {
+        return receitas;
+    }
+
+    public List<Despesa> getDespesas() {
+        return despesas;
+    }
+
+    public List<MetaFinanceira> getMetasFinanceiras() {
+        return metasFinanceiras;
+    }
+
+    public List<Notificacao> getNotificacoes() {
+        return notificacoes;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     // Outros métodos conforme dicionário de dados...
 }

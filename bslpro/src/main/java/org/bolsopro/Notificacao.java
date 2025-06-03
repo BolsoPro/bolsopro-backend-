@@ -32,4 +32,9 @@ public class Notificacao {
     public String enviar() {
         return "Notificação: " + mensagem + " | Tipo: " + tipo;
     }
+
+    // ✅ Adicionado:
+    public int getUsuarioId() {
+        return usuarioId;
+    }
 }
