@@ -11,6 +11,8 @@ import org.bolsopro.blsopro.Notificacao;
 import org.bolsopro.blsopro.repository.UsuarioRepository;
 import org.bolsopro.blsopro.service.GerenciadorNotificacoes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -111,15 +113,22 @@ public class UsuarioController {
 
 
     @GetMapping("/{id}/sugestao")
-    public SugestaoInvestimento gerarSugestao(@PathVariable Long id) {
+    public ResponseEntity<?> gerarSugestao(@PathVariable Long id) {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario != null && usuario.getPerfilComportamental() != null) {
-            return SugestaoInvestimento.gerarSugestoes(
-                    usuario.getPerfilComportamental().getTipoPerfil()
-            );
+
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado com ID: " + id);
         }
-        return null;
+
+        PerfilComportamental perfil = usuario.getPerfilComportamental();
+        if (perfil == null || perfil.getTipoPerfil() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Perfil comportamental do usuário ainda não foi definido.");
+        }
+
+        SugestaoInvestimento sugestao = SugestaoInvestimento.gerarSugestoes(perfil.getTipoPerfil());
+        return ResponseEntity.ok(sugestao);
     }
+
 
 
     @GetMapping("/{id}/resumo")

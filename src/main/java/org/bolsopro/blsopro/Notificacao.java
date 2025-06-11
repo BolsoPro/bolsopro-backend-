@@ -68,7 +68,7 @@ public class Notificacao {
         this.usuario = usuario;
     }
 
-    // ✅ Método auxiliar para pegar o ID do usuário associado
+    // Método auxiliar para pegar o ID do usuário associado
     public Long getUsuarioId() {
         return usuario != null ? usuario.getId() : null;
     }

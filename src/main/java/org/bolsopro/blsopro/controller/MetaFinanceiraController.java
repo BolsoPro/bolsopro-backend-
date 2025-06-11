@@ -1,7 +1,9 @@
 package org.bolsopro.blsopro.controller;
 
 import org.bolsopro.blsopro.MetaFinanceira;
+import org.bolsopro.blsopro.Usuario;
 import org.bolsopro.blsopro.repository.MetaFinanceiraRepository;
+import org.bolsopro.blsopro.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,9 @@ public class MetaFinanceiraController {
 
     @Autowired
     private MetaFinanceiraRepository metaFinanceiraRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public List<MetaFinanceira> listarTodas() {
@@ -43,5 +48,13 @@ public class MetaFinanceiraController {
     @DeleteMapping("/{id}")
     public void deletarMeta(@PathVariable Long id) {
         metaFinanceiraRepository.deleteById(id);
+    }
+
+    @PostMapping("/usuarios/{id}/metas")
+    public MetaFinanceira adicionarMetaParaUsuario(@PathVariable Long id, @RequestBody MetaFinanceira meta) {
+        return usuarioRepository.findById(id).map(usuario -> {
+            meta.setUsuario(usuario);
+            return metaFinanceiraRepository.save(meta);
+        }).orElse(null);
     }
 }

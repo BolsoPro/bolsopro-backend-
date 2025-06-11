@@ -8,29 +8,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/receitas")
+@RequestMapping("/api/usuarios/{usuarioId}/receitas")
 public class ReceitaController {
 
     @Autowired
     private ReceitaRepository receitaRepository;
 
     @GetMapping
-    public List<Receita> listarTodas() {
-        return receitaRepository.findAll();
+    public List<Receita> listarReceitasDoUsuario(@PathVariable Long usuarioId) {
+        return receitaRepository.findByUsuarioId(usuarioId);
     }
 
     @PostMapping
-    public Receita criarReceita(@RequestBody Receita receita) {
+    public Receita criarReceita(@PathVariable Long usuarioId, @RequestBody Receita receita) {
+        receita.getUsuario().setId(usuarioId); // define o ID do usuário manualmente
         return receitaRepository.save(receita);
     }
 
-    @GetMapping("/{id}")
-    public Receita buscarPorId(@PathVariable Long id) {
-        return receitaRepository.findById(id).orElse(null);
-    }
-
     @PutMapping("/{id}")
-    public Receita atualizarReceita(@PathVariable Long id, @RequestBody Receita receitaAtualizada) {
+    public Receita atualizarReceita(@PathVariable Long usuarioId, @PathVariable Long id, @RequestBody Receita receitaAtualizada) {
         return receitaRepository.findById(id).map(receita -> {
             receita.setDescricao(receitaAtualizada.getDescricao());
             receita.setValor(receitaAtualizada.getValor());
