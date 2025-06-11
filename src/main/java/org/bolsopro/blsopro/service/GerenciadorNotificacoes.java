@@ -29,7 +29,7 @@ public class GerenciadorNotificacoes {
     }
 
     public void enviarNotificacaoParaUsuario(Usuario usuario) {
-        List<Notificacao> notificacoes = notificacaoRepository.findByUsuarioId(usuario.getId());
+        List<Notificacao> notificacoes = notificacaoRepository.findByUsuario_Id(usuario.getId());
         for (Notificacao n : notificacoes) {
             System.out.println(n.enviar());
         }
