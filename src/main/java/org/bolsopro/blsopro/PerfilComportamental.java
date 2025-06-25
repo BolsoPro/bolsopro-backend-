@@ -60,7 +60,6 @@ public class PerfilComportamental {
         }
     }
 
-    // ✅ Adicionado para permitir avaliação a partir de listas de objetos
     public void avaliar(List<Receita> receitas, List<Despesa> despesas) {
         float totalReceitas = receitas.stream()
                 .map(Receita::getValor)

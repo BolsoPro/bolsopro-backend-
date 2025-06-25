@@ -1,5 +1,7 @@
 package org.bolsopro.blsopro.controller;
 
+import org.bolsopro.blsopro.dto.LoginResponse;
+
 import org.bolsopro.blsopro.Usuario;
 import org.bolsopro.blsopro.Receita;
 import org.bolsopro.blsopro.Despesa;
@@ -8,6 +10,7 @@ import org.bolsopro.blsopro.PerfilComportamental;
 import org.bolsopro.blsopro.SugestaoInvestimento;
 import org.bolsopro.blsopro.ResumoFinanceiro;
 import org.bolsopro.blsopro.Notificacao;
+import org.bolsopro.blsopro.dto.LoginRequest;
 import org.bolsopro.blsopro.repository.UsuarioRepository;
 import org.bolsopro.blsopro.service.GerenciadorNotificacoes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,21 @@ public class UsuarioController {
         return usuarioRepository.save(usuario);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        Usuario usuario = usuarioRepository.findAll().stream()
+                .filter(u -> u.getEmail().equals(request.getEmail()) && u.getSenha().equals(request.getSenha()))
+                .findFirst()
+                .orElse(null);
+
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+        }
+
+        return ResponseEntity.ok(new LoginResponse(usuario.getId(), usuario.getNome(), usuario.getEmail()));
+    }
+    
+    
     @GetMapping("/{id}")
     public Usuario buscarPorId(@PathVariable Long id) {
         return usuarioRepository.findById(id).orElse(null);

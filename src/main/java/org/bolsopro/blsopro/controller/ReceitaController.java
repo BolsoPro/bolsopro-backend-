@@ -21,7 +21,7 @@ public class ReceitaController {
 
     @PostMapping
     public Receita criarReceita(@PathVariable Long usuarioId, @RequestBody Receita receita) {
-        receita.getUsuario().setId(usuarioId); // define o ID do usuário manualmente
+        receita.getUsuario().setId(usuarioId); 
         return receitaRepository.save(receita);
     }
 

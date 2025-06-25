@@ -14,18 +14,21 @@ public class Receita {
     private float valor;
     private LocalDate data;
 
+    // Adicione esta linha:
+    private String categoria;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-
     public Receita() {
     }
 
-    public Receita(String descricao, float valor, LocalDate data, Usuario usuario) {
+    public Receita(String descricao, float valor, LocalDate data, String categoria, Usuario usuario) {
         this.descricao = descricao;
         this.valor = valor;
         this.data = data;
+        this.categoria = categoria;
         this.usuario = usuario;
     }
 
@@ -60,6 +63,15 @@ public class Receita {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    // Getter e Setter para categoria
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public Usuario getUsuario() {
