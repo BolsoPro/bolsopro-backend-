@@ -75,15 +75,18 @@ public class UsuarioController {
         usuarioRepository.deleteById(id);
     }
 
-    @PostMapping("/{id}/receitas")
-    public Usuario adicionarReceita(@PathVariable Long id, @RequestBody Receita receita) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
-        if (usuario != null) {
+    @PostMapping("/{id}/receitas/adicionar")
+    public ResponseEntity<Usuario> adicionarReceita(@PathVariable Long id, @RequestBody Receita receita) {
+    return usuarioRepository.findById(id)
+        .map(usuario -> {
             usuario.cadastrarReceita(receita);
-            return usuarioRepository.save(usuario);
-        }
-        return null;
-    }
+            usuarioRepository.save(usuario);
+            Usuario atualizado = usuarioRepository.findById(id).orElse(null);
+            return ResponseEntity.ok(atualizado);
+        })
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+}
+
 
     @PostMapping("/{id}/despesas")
     public Usuario adicionarDespesa(@PathVariable Long id, @RequestBody Despesa despesa) {
